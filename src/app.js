@@ -1,10 +1,15 @@
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 8080;
 
 const http = require("http");
 const url = require("url");
 
 const storage = new Map();
 const secrets = new Map();
+
+const init = () => {
+    storage.clear();
+    secrets.clear();
+};
 
 const server = http.createServer((req, res) => {
     let data = "";
@@ -16,23 +21,24 @@ const server = http.createServer((req, res) => {
     req.on("end", () => {
         const parsedUrl = url.parse(req.url, false);
         const urlChunks = parsedUrl.path.split("/").filter(item => item.length);
-        const [team, ...tail] = urlChunks;
+        const [key, ...tail] = urlChunks;
         const password = req.headers.authorization;
 
         if (tail.length) {
             res.writeHead(400);
+            res.end();
             return;
         }
 
         switch (req.method) {
             case "GET": {
-                if (storage.has(team) === false) {
+                if (storage.has(key) === false) {
                     res.writeHead(404);
                     break;
                 }
 
                 res.writeHead(200, { "Content-Type": "application/json" });
-                res.write(JSON.stringify(storage.get(team)));
+                res.write(JSON.stringify(storage.get(key)));
                 break;
             }
             case "POST": {
@@ -41,44 +47,34 @@ const server = http.createServer((req, res) => {
                     break;
                 }
 
-                if (storage.has(team) === true) {
+                if (storage.has(key) === true) {
                     res.writeHead(409);
                     break;
                 }
 
-                secrets.set(team, password);
-                storage.set(team, JSON.parse(data));
+                secrets.set(key, password);
+                storage.set(key, JSON.parse(data));
                 res.writeHead(200);
                 break;
             }
             case "PUT": {
-                if (password === undefined || secrets.get(team) !== password) {
+                if (password === undefined || secrets.get(key) !== password) {
                     res.writeHead(401);
                     break;
                 }
 
-                if (storage.has(team) === false) {
-                    res.writeHead(404);
-                    break;
-                }
-
-                storage.set(team, JSON.parse(data));
+                storage.set(key, JSON.parse(data));
                 res.writeHead(200);
                 break;
             }
             case "DELETE": {
-                if (password === undefined || secrets.get(team) !== password) {
+                if (password === undefined || secrets.get(key) !== password) {
                     res.writeHead(401);
                     break;
                 }
 
-                if (storage.has(team) === false) {
-                    res.writeHead(404);
-                    break;
-                }
-
-                secrets.delete(team);
-                storage.delete(team);
+                secrets.delete(key);
+                storage.delete(key);
                 res.writeHead(200);
                 break;
             }
@@ -87,9 +83,8 @@ const server = http.createServer((req, res) => {
         res.end();
     });
 }).listen(port, () => {
-    if (process.env.NODE_ENV !== "test") {
-        console.info("Server is listening on port", port);
-    }
+    console.info("Server is listening on port", port);
 });
 
 module.exports = server;
+module.exports.init = init;

@@ -26,6 +26,8 @@
             "stopOnEntry": false,
             "args": [
                 "${file}",
+                "--exit",
+                "--colors",
                 "--no-timeouts"
             ],
             "cwd": "${workspaceRoot}"
