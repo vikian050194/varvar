@@ -7,9 +7,6 @@
             "name": "Launch Program",
             "program": "${file}",
             "cwd": "${workspaceRoot}",
-            "env": {
-                "NODE_ENV": "testing"
-            }
         },
         {
             "type": "node",

@@ -10,15 +10,13 @@
 
 ## Motivation
 
-Initially [warp] needs backend for (at least) one feature. Also it's suitable time and place to gain a bit experience in vanilla Node.
-
-After that I realized that in fact this server could be used in any similar cases.
+Initially [warp] needs backend for (at least) one feature. Also it's suitable time and place to gain a bit experience in vanilla Node. After that I realized that in fact this server could be used in any similar cases.
 
 You can take a look at [list of questions and problems](./QA.md) that I faced during development.
 
 ## Requirements
 
-Developed and tested on `Ubuntu 20.04.4 LTS`: `Node.js v16.20.0`.
+Developed and tested on `Ubuntu 20.04.4 LTS` and `Node.js v16.20.0`. Run via DOcker is possible as well.
 
 ## Usage
 
