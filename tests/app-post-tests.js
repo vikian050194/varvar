@@ -11,7 +11,7 @@ describe("app - POST", () => {
 
     it("200 - OK", (done) => {
         const data = {
-            "number": 1234
+            number: 1234
         };
 
         chai.request(app)
@@ -26,7 +26,7 @@ describe("app - POST", () => {
 
     it("401 - Unauthorized", (done) => {
         const data = {
-            "number": 1234
+            number: 1234
         };
 
         chai.request(app)
@@ -40,7 +40,7 @@ describe("app - POST", () => {
 
     it("409 - Conflict", (done) => {
         const data = {
-            "number": 1234
+            number: 1234
         };
 
         chai.request(app)

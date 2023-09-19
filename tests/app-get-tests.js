@@ -29,7 +29,7 @@ describe("app - GET", () => {
 
     it("200 - OK", (done) => {
         const data = {
-            "number": 1234
+            number: 1234
         };
 
         chai.request(app)
